@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+
+# Database (don't commit your local data)
+student_tracker.db
+
+# Environment files
+.env
+venv/
+
+# OS files
+.DS_Store

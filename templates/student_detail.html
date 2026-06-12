@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}{{ student.name }} - Student Tracker{% endblock %}
+
+{% block content %}
+
+    <div class="page-header">
+        <a href="{{ url_for('index') }}" class="back-link">&larr; Back to Dashboard</a>
+        <h1>{{ student.name }}</h1>
+        <p class="subtitle">Roll Number: {{ student.roll_number }}</p>
+    </div>
+
+    <div class="detail-card">
+
+        <div class="detail-summary">
+            <div class="summary-item">
+                <span class="summary-label">Subjects Graded</span>
+                <span class="summary-value">{{ student.grades|length }}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Overall Average</span>
+                {% if student.average >= 75 %}
+                    <span class="summary-value average-good">{{ student.average }}</span>
+                {% elif student.average >= 50 %}
+                    <span class="summary-value average-ok">{{ student.average }}</span>
+                {% else %}
+                    <span class="summary-value average-low">{{ student.average }}</span>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if student.grades %}
+            <table class="student-table">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Score</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for subject, score in student.grades.items() %}
+                    <tr>
+                        <td>{{ subject }}</td>
+                        <td>{{ score }} / 100</td>
+                        <td>
+                            <!--
+                                A simple letter-grade conversion done
+                                right here in the template. Since this
+                                is purely a DISPLAY concern (it doesn't
+                                get saved anywhere), it's reasonable to
+                                keep it in the template rather than
+                                models.py. If we needed this logic in
+                                multiple places, we'd move it to Python.
+                            -->
+                            {% if score >= 90 %}
+                                <span class="grade-letter grade-a">A</span>
+                            {% elif score >= 75 %}
+                                <span class="grade-letter grade-b">B</span>
+                            {% elif score >= 60 %}
+                                <span class="grade-letter grade-c">C</span>
+                            {% elif score >= 40 %}
+                                <span class="grade-letter grade-d">D</span>
+                            {% else %}
+                                <span class="grade-letter grade-f">F</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="empty-state">
+                <p>No grades recorded for this student yet.</p>
+                <a href="{{ url_for('add_grade') }}" class="btn btn-primary">+ Add Grade</a>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Insights - Student Tracker{% endblock %}
+
+{% block content %}
+
+    <div class="page-header">
+        <h1>Subject Insights</h1>
+        <p class="subtitle">Find the topper and class average for any subject</p>
+    </div>
+
+    {% if subjects %}
+        <div class="form-card">
+            <form method="POST">
+                <div class="form-group">
+                    <label for="subject">Choose a Subject</label>
+                    <select id="subject" name="subject" required>
+                        <option value="" disabled {% if not selected_subject %}selected{% endif %}>
+                            -- Select a subject --
+                        </option>
+                        {% for subject in subjects %}
+                            <option value="{{ subject }}"
+                                {% if subject == selected_subject %}selected{% endif %}>
+                                {{ subject }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Show Insights</button>
+                </div>
+            </form>
+        </div>
+
+        {% if result %}
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <div class="insight-icon">🏆</div>
+                    <div class="insight-title">Subject Topper</div>
+                    <div class="insight-value">{{ result.topper_name }}</div>
+                    <div class="insight-detail">
+                        Roll No. {{ result.topper_roll }} &middot; Scored {{ result.topper_score }}/100
+                    </div>
+                </div>
+
+                <div class="insight-card">
+                    <div class="insight-icon">📈</div>
+                    <div class="insight-title">Class Average</div>
+                    <div class="insight-value">{{ result.class_average }}</div>
+                    <div class="insight-detail">
+                        Average score in {{ result.subject }} across all students
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+    {% else %}
+        <div class="empty-state">
+            <p>No grades have been added yet. Add some grades first to see insights.</p>
+            <a href="{{ url_for('add_grade') }}" class="btn btn-primary">+ Add Grade</a>
+        </div>
+    {% endif %}
+
+{% endblock %}

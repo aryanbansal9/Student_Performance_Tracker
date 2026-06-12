@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Add Grade - Student Tracker{% endblock %}
+
+{% block content %}
+
+    <div class="page-header">
+        <h1>Add a Grade</h1>
+        <p class="subtitle">Assign a subject score to a student</p>
+    </div>
+
+    {% if students %}
+        <div class="form-card">
+            <form method="POST">
+
+                <div class="form-group">
+                    <label for="roll_number">Student</label>
+                    <!--
+                        A <select> dropdown built from the list of
+                        students passed in from app.py. This is
+                        better than a free-text field because it
+                        guarantees the roll number actually exists
+                        -- one less thing that can go wrong.
+                    -->
+                    <select id="roll_number" name="roll_number" required>
+                        <option value="" disabled selected>-- Choose a student --</option>
+                        {% for student in students %}
+                            <option value="{{ student.roll_number }}">
+                                {{ student.roll_number }} - {{ student.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input
+                        type="text"
+                        id="subject"
+                        name="subject"
+                        placeholder="e.g. Math, Science, English"
+                        required
+                    >
+                    <small class="hint">
+                        Tip: use the same spelling/capitalisation each
+                        time (e.g. always "Math", not sometimes "math")
+                        so the Insights page groups scores correctly.
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="score">Score (0-100)</label>
+                    <input
+                        type="number"
+                        id="score"
+                        name="score"
+                        placeholder="e.g. 85"
+                        min="0"
+                        max="100"
+                        required
+                    >
+                    <!--
+                        type="number" with min/max gives a basic
+                        browser-level check (and a nicer input UI
+                        with up/down arrows on most browsers), but
+                        app.py and database.py STILL validate the
+                        range again on the server side.
+                    -->
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Add Grade</button>
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                </div>
+
+            </form>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>You need to add at least one student before you can add grades.</p>
+            <a href="{{ url_for('add_student') }}" class="btn btn-primary">+ Add Student</a>
+        </div>
+    {% endif %}
+
+{% endblock %}

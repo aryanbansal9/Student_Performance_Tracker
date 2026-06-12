@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Student Performance Tracker{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!--
+        This navigation bar appears on EVERY page because every
+        page "extends" this base.html file. We only write it once,
+        here, and it shows up everywhere — that's the whole point
+        of template inheritance.
+    -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="nav-logo">
+                📊 Student Tracker
+            </a>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}">Dashboard</a>
+                <a href="{{ url_for('add_student') }}">Add Student</a>
+                <a href="{{ url_for('add_grade') }}">Add Grade</a>
+                <a href="{{ url_for('insights') }}">Insights</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!--
+            Flash messages: these are the one-time success/error
+            banners we set with flash() in app.py.
+
+            get_flashed_messages(with_categories=true) returns a
+            list of (category, message) pairs and then CLEARS
+            them — so refreshing the page won't show the same
+            message again.
+        -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!--
+            block content -> every child template fills this in
+            with its own page-specific content.
+        -->
+        {% block content %}{% endblock %}
+
+    </div>
+
+</body>
+</html>
