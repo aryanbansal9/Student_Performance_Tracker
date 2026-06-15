@@ -5,7 +5,7 @@ teachers can track their students' scores across different subjects. Built
 it using Flask and SQLite, which I was learning alongside building this so
 some parts took a while to figure out.
 
-# Live Demo: https://student-performance-tracker-zz8o.onrender.com
+ **Live Demo:** https://student-performance-tracker-zz8o.onrender.com
 
 ## What it does
 
