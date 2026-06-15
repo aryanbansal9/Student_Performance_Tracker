@@ -1,604 +1,465 @@
-/* ==========================================================
-   Student Performance Tracker — Stylesheet
-   ==========================================================
-
-   Design tokens (our palette/spacing system).
-   Defining these as CSS variables means if we want to
-   re-theme the whole app later (e.g. dark mode), we only
-   change the values here — not hundreds of individual rules.
-   ========================================================== */
+/* ============================================================
+   Student Performance Tracker
+   Visual identity: a teacher's gradebook / ledger.
+   ============================================================ */
 
 :root {
-    /* Core palette: deep indigo + slate, with amber as the
-       single warm accent for highlights and primary actions */
-    --color-bg:        #F4F5F9;
-    --color-surface:   #FFFFFF;
-    --color-ink:       #1E2233;
-    --color-muted:     #6B7280;
-    --color-border:    #E2E5EE;
+    --paper:      #F2EFE6;
+    --surface:    #FFFFFF;
+    --ink:        #1F3D2B;   
+    --ink-soft:   #2E5240;
+    --mark:       #B5462C;   
+    --mark-soft:  #F4E3DD;
+    --muted:      #756F62;
+    --line:       #DED7C7;
 
-    --color-primary:   #3B3F8C;   /* deep indigo */
-    --color-primary-dark: #2D3068;
-    --color-accent:    #F2A33D;   /* warm amber */
+    --good:  #1F3D2B;
+    --good-bg: #E4ECE6;
+    --mid:   #8A6A1E;
+    --mid-bg:  #F4ECD7;
+    --low:   #B5462C;
+    --low-bg:  #F4E3DD;
 
-    --color-good:      #1F9D55;
-    --color-good-bg:   #E6F6ED;
-    --color-ok:        #B7791F;
-    --color-ok-bg:     #FEF6E5;
-    --color-low:       #C0392B;
-    --color-low-bg:    #FBEAE8;
+    --display: 'Roboto Slab', Georgia, serif;
+    --body:    -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --data:    'IBM Plex Mono', 'Courier New', monospace;
 
-    --font-display: 'Georgia', 'Times New Roman', serif;
-    --font-body:    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-mono:    'Courier New', monospace;
-
-    --radius: 8px;
-    --shadow-sm: 0 1px 2px rgba(30, 34, 51, 0.06);
-    --shadow-md: 0 4px 12px rgba(30, 34, 51, 0.08);
+    --radius: 4px;
+    --shadow: 0 1px 3px rgba(31, 61, 43, 0.08);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    font-family: var(--font-body);
-    background-color: var(--color-bg);
-    color: var(--color-ink);
+    font-family: var(--body);
+    background-color: var(--paper);
+    color: var(--ink);
     line-height: 1.6;
 }
 
-/* ==========================================================
-   Navigation
-   ========================================================== */
+a { color: var(--ink); }
 
-.navbar {
-    background-color: var(--color-primary);
-    box-shadow: var(--shadow-sm);
+/* ── Header ───────────────────────────────────────────────── */
+
+.site-header {
+    background-color: var(--ink);
+    border-bottom: 4px solid var(--mark);
 }
 
-.nav-container {
-    max-width: 1100px;
+.header-row {
+    max-width: 1080px;
     margin: 0 auto;
     padding: 0 24px;
+    height: 68px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 64px;
 }
 
-.nav-logo {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
+.brand {
+    font-family: var(--display);
+    font-size: 1.3rem;
     font-weight: 700;
     color: #FFFFFF;
     text-decoration: none;
     letter-spacing: 0.5px;
 }
 
-.nav-links {
+.brand-mark {
+    color: var(--mark);
+}
+
+.site-nav {
     display: flex;
-    gap: 28px;
 }
 
-/* Fallback for older renderers that don't support flexbox `gap`
-   (e.g. very old WebKit builds used by some PDF/screenshot tools).
-   Modern browsers support gap fine, but margin-left here is
-   redundant-but-harmless on top of gap, so it's a safe belt-
-   and-suspenders addition. */
-.nav-links a + a {
-    margin-left: 28px;
-}
-
-@media (max-width: 640px) {
-    .nav-links a + a {
-        margin-left: 0;
-    }
-}
-
-.nav-links a {
-    color: rgba(255, 255, 255, 0.85);
+.site-nav a {
+    color: rgba(255, 255, 255, 0.78);
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 500;
-    transition: color 0.15s ease;
     padding: 8px 0;
+    margin-left: 28px;
     border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
 }
 
-.nav-links a:hover {
+.site-nav a:hover,
+.site-nav a:focus-visible {
     color: #FFFFFF;
-    border-bottom-color: var(--color-accent);
+    border-bottom-color: var(--mark);
 }
 
-/* ==========================================================
-   Layout / Container
-   ========================================================== */
+/* ── Layout ───────────────────────────────────────────────── */
 
-.container {
-    max-width: 1100px;
+.page {
+    max-width: 1080px;
     margin: 0 auto;
     padding: 40px 24px 80px;
 }
 
-.page-header {
-    margin-bottom: 32px;
+.page-head {
+    margin-bottom: 28px;
 }
 
-.page-header h1 {
-    font-family: var(--font-display);
-    font-size: 2.1rem;
+.page-head h1 {
+    font-family: var(--display);
+    font-size: 2rem;
     font-weight: 700;
-    color: var(--color-ink);
     margin-bottom: 4px;
 }
 
-.subtitle {
-    color: var(--color-muted);
-    font-size: 1rem;
+.page-head p {
+    color: var(--muted);
 }
 
 .back-link {
     display: inline-block;
-    color: var(--color-primary);
-    text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 600;
-    margin-bottom: 12px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    margin-bottom: 10px;
 }
 
-.back-link:hover {
-    text-decoration: underline;
-}
+.back-link:hover { text-decoration: underline; }
 
-/* ==========================================================
-   Flash Messages
-   ========================================================== */
+/* ── Notices ──────────────────────────────────────────────── */
 
-.flash-container {
-    margin-bottom: 24px;
-}
-
-.flash {
-    padding: 12px 18px;
+.notice {
+    padding: 12px 16px;
     border-radius: var(--radius);
-    font-size: 0.95rem;
+    border: 1px solid;
+    font-size: 0.92rem;
     font-weight: 500;
     margin-bottom: 10px;
-    border: 1px solid transparent;
 }
 
-.flash-success {
-    background-color: var(--color-good-bg);
-    color: var(--color-good);
-    border-color: rgba(31, 157, 85, 0.2);
+.notice-success {
+    background-color: var(--good-bg);
+    color: var(--good);
+    border-color: rgba(31, 61, 43, 0.18);
 }
 
-.flash-error {
-    background-color: var(--color-low-bg);
-    color: var(--color-low);
-    border-color: rgba(192, 57, 43, 0.2);
+.notice-error {
+    background-color: var(--low-bg);
+    color: var(--low);
+    border-color: rgba(181, 70, 44, 0.2);
 }
 
-/* ==========================================================
-   Stat Cards (Dashboard top row)
-   ========================================================== */
+.notices { margin-bottom: 24px; }
 
-.stats-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+/* ── Signature element: grade-stamp summary cards ────────────── */
+
+.summary-row {
+    display: flex;
+    flex-wrap: wrap;
     gap: 16px;
     margin-bottom: 32px;
 }
 
-.stat-card {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
+.stamp {
+    position: relative;
+    background-color: var(--surface);
+    border: 1px solid var(--line);
     border-radius: var(--radius);
-    padding: 20px 24px;
-    box-shadow: var(--shadow-sm);
+    padding: 18px 24px;
+    box-shadow: var(--shadow);
+    min-width: 160px;
+    flex: 1;
 }
 
-.stat-value {
-    font-family: var(--font-display);
-    font-size: 2.2rem;
+.stamp::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--mark);
+}
+
+.stamp-value {
+    font-family: var(--data);
+    font-size: 2rem;
     font-weight: 700;
-    color: var(--color-primary);
+    color: var(--ink);
     line-height: 1;
-    margin-bottom: 6px;
 }
 
-.stat-label {
+.stamp-label {
+    margin-top: 6px;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+}
+
+.stamp .stamp-action {
+    display: inline-block;
+    margin-top: 12px;
     font-size: 0.85rem;
-    color: var(--color-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink-soft);
 }
 
-/* ==========================================================
-   Tables
-   ========================================================== */
+/* ── Ledger table ─────────────────────────────────────────── */
 
-.student-table {
+.ledger {
     width: 100%;
-    background-color: var(--color-surface);
+    background-color: var(--surface);
+    border: 1px solid var(--line);
     border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
     border-collapse: collapse;
+    overflow: hidden;
 }
 
-.student-table th,
-.student-table td {
-    padding: 14px 18px;
+.ledger th, .ledger td {
+    padding: 13px 18px;
     text-align: left;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--line);
 }
 
-.student-table th {
-    background-color: var(--color-bg);
-    font-size: 0.8rem;
+.ledger th {
+    font-size: 0.76rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--color-muted);
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    background-color: var(--paper);
     font-weight: 600;
 }
 
-.student-table tbody tr:last-child td {
-    border-bottom: none;
+.ledger tbody tr:last-child td { border-bottom: none; }
+.ledger tbody tr:hover { background-color: var(--mark-soft); }
+
+.roll-no {
+    font-family: var(--data);
+    color: var(--muted);
 }
 
-.student-table tbody tr:hover {
-    background-color: #FAFBFE;
-}
-
-/* ==========================================================
-   Badges / Pills (subject grades shown in the table)
-   ========================================================== */
-
-.badge {
+.score-tag {
     display: inline-block;
-    background-color: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    padding: 3px 12px;
+    font-family: var(--data);
     font-size: 0.8rem;
-    color: var(--color-ink);
-    margin: 2px 4px 2px 0;
-    font-family: var(--font-mono);
-}
-
-.text-muted {
-    color: var(--color-muted);
-    font-size: 0.9rem;
-    font-style: italic;
-}
-
-/* ==========================================================
-   Average / Performance Indicators
-   ========================================================== */
-
-.average {
-    display: inline-block;
-    padding: 4px 14px;
+    background-color: var(--paper);
+    border: 1px solid var(--line);
     border-radius: 999px;
-    font-weight: 700;
-    font-size: 0.95rem;
+    padding: 2px 11px;
+    margin: 2px 4px 2px 0;
 }
 
-.average-good { background-color: var(--color-good-bg); color: var(--color-good); }
-.average-ok   { background-color: var(--color-ok-bg);   color: var(--color-ok); }
-.average-low  { background-color: var(--color-low-bg);  color: var(--color-low); }
+.muted { color: var(--muted); font-style: italic; font-size: 0.9rem; }
 
-/* ==========================================================
-   Buttons
-   ========================================================== */
+/* ── Grade pills ──────────────────────────────────────────── */
+
+.grade-pill {
+    display: inline-block;
+    font-family: var(--data);
+    font-weight: 700;
+    padding: 3px 13px;
+    border-radius: 999px;
+    font-size: 0.92rem;
+}
+
+.grade-pill.good { background-color: var(--good-bg); color: var(--good); }
+.grade-pill.mid  { background-color: var(--mid-bg);  color: var(--mid); }
+.grade-pill.low  { background-color: var(--low-bg);  color: var(--low); }
+
+.letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius);
+    font-family: var(--display);
+    font-weight: 700;
+}
+
+.letter.good { background-color: var(--good-bg); color: var(--good); }
+.letter.mid  { background-color: var(--mid-bg);  color: var(--mid); }
+.letter.low  { background-color: var(--low-bg);  color: var(--low); }
+
+/* ── Buttons ──────────────────────────────────────────────── */
 
 .btn {
     display: inline-block;
-    padding: 10px 22px;
-    border-radius: var(--radius);
-    font-size: 0.95rem;
-    font-weight: 600;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
-}
-
-.btn:active {
-    transform: translateY(1px);
-}
-
-.btn-primary {
-    background-color: var(--color-primary);
-    color: #FFFFFF;
-}
-
-.btn-primary:hover {
-    background-color: var(--color-primary-dark);
-    box-shadow: var(--shadow-md);
-}
-
-.btn-secondary {
-    background-color: var(--color-surface);
-    color: var(--color-ink);
-    border: 1px solid var(--color-border);
-}
-
-.btn-secondary:hover {
-    background-color: var(--color-bg);
-}
-
-.btn-small {
-    padding: 6px 14px;
-    font-size: 0.85rem;
-}
-
-.btn-view {
-    background-color: var(--color-bg);
-    color: var(--color-primary);
-    border: 1px solid var(--color-border);
-}
-
-.btn-view:hover {
-    background-color: #EDEFF7;
-}
-
-.btn-delete {
-    background-color: var(--color-low-bg);
-    color: var(--color-low);
-}
-
-.btn-delete:hover {
-    background-color: #F8DAD6;
-}
-
-.actions {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.inline-form {
-    display: inline;
-}
-
-/* ==========================================================
-   Forms
-   ========================================================== */
-
-.form-card {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 32px;
-    max-width: 480px;
-    box-shadow: var(--shadow-sm);
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
+    font-family: var(--body);
     font-size: 0.9rem;
     font-weight: 600;
-    margin-bottom: 6px;
-    color: var(--color-ink);
-}
-
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 10px 14px;
-    border: 1px solid var(--color-border);
+    padding: 9px 20px;
     border-radius: var(--radius);
+    border: 1px solid transparent;
+    text-decoration: none;
+    cursor: pointer;
+    transition: filter 0.1s ease;
+}
+
+.btn:active { filter: brightness(0.95); }
+
+.btn-primary { background-color: var(--ink); color: #FFFFFF; }
+.btn-primary:hover { background-color: var(--ink-soft); }
+
+.btn-ghost {
+    background-color: transparent;
+    color: var(--ink);
+    border-color: var(--line);
+}
+.btn-ghost:hover { background-color: var(--surface); }
+
+.btn-small { padding: 6px 13px; font-size: 0.82rem; }
+
+.btn-mark {
+    background-color: var(--mark-soft);
+    color: var(--mark);
+}
+.btn-mark:hover { background-color: #ECD4CC; }
+
+.row-actions { display: flex; gap: 8px; align-items: center; }
+.row-actions > * + * { margin-left: 8px; }
+.inline-form { display: inline; }
+
+/* ── Forms ────────────────────────────────────────────────── */
+
+.card {
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 30px;
+    max-width: 460px;
+}
+
+.field { margin-bottom: 18px; }
+
+.field label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.field input, .field select {
+    width: 100%;
+    padding: 10px 13px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font-family: var(--body);
     font-size: 0.95rem;
-    font-family: var(--font-body);
-    color: var(--color-ink);
-    background-color: var(--color-surface);
-    transition: border-color 0.15s ease;
+    background-color: var(--surface);
+    color: var(--ink);
 }
 
-.form-group input:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(59, 63, 140, 0.1);
+.field input:focus, .field select:focus {
+    outline: 2px solid var(--ink-soft);
+    outline-offset: 1px;
 }
 
-.hint {
+.field .help {
     display: block;
     margin-top: 6px;
     font-size: 0.8rem;
-    color: var(--color-muted);
+    color: var(--muted);
 }
 
-.form-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 8px;
-}
+.actions { display: flex; gap: 10px; margin-top: 6px; }
+.actions > * + * { margin-left: 10px; }
 
-/* ==========================================================
-   Empty States
-   ========================================================== */
+/* ── Empty state ──────────────────────────────────────────── */
 
-.empty-state {
-    background-color: var(--color-surface);
-    border: 1px dashed var(--color-border);
+.empty {
+    background-color: var(--surface);
+    border: 1px dashed var(--line);
     border-radius: var(--radius);
-    padding: 48px 24px;
+    padding: 44px 24px;
     text-align: center;
 }
 
-.empty-state p {
-    color: var(--color-muted);
-    margin-bottom: 16px;
-    font-size: 1.05rem;
-}
+.empty p { color: var(--muted); margin-bottom: 14px; }
 
-/* ==========================================================
-   Student Detail Page
-   ========================================================== */
+/* ── Profile page ─────────────────────────────────────────── */
 
-.detail-card {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 28px;
-    box-shadow: var(--shadow-sm);
-}
-
-.detail-summary {
+.profile-summary {
     display: flex;
-    gap: 32px;
-    margin-bottom: 24px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--color-border);
+    flex-wrap: wrap;
+    gap: 28px;
+    padding-bottom: 22px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid var(--line);
 }
 
-.detail-summary .summary-item + .summary-item {
-    margin-left: 32px;
+.profile-summary > div + div {
+    margin-left: 28px;
 }
 
 @media (max-width: 640px) {
-    .detail-summary .summary-item + .summary-item {
+    .profile-summary > div + div {
         margin-left: 0;
     }
 }
 
-.summary-item {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.summary-label {
-    font-size: 0.8rem;
-    color: var(--color-muted);
+.profile-summary .stat-label {
+    font-size: 0.76rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 4px;
 }
 
-.summary-value {
-    font-family: var(--font-display);
-    font-size: 1.8rem;
+.profile-summary .stat-value {
+    font-family: var(--data);
+    font-size: 1.7rem;
     font-weight: 700;
-    color: var(--color-ink);
 }
 
-.summary-value.average-good { color: var(--color-good); }
-.summary-value.average-ok   { color: var(--color-ok); }
-.summary-value.average-low  { color: var(--color-low); }
+/* ── Insights ─────────────────────────────────────────────── */
 
-/* Letter grade chips */
-
-.grade-letter {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    font-weight: 700;
-    font-family: var(--font-display);
-}
-
-.grade-a { background-color: var(--color-good-bg); color: var(--color-good); }
-.grade-b { background-color: var(--color-good-bg); color: var(--color-good); }
-.grade-c { background-color: var(--color-ok-bg);   color: var(--color-ok); }
-.grade-d { background-color: var(--color-ok-bg);   color: var(--color-ok); }
-.grade-f { background-color: var(--color-low-bg);  color: var(--color-low); }
-
-/* ==========================================================
-   Insights Page
-   ========================================================== */
-
-.insights-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
+.insight-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
     margin-top: 24px;
 }
 
-.insight-card {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
+.insight {
+    flex: 1;
+    min-width: 220px;
+    background-color: var(--surface);
+    border: 1px solid var(--line);
     border-radius: var(--radius);
-    padding: 28px;
-    text-align: center;
-    box-shadow: var(--shadow-sm);
+    padding: 24px;
+    box-shadow: var(--shadow);
 }
 
-.insight-icon {
-    font-size: 2rem;
-    margin-bottom: 8px;
-}
-
-.insight-title {
-    font-size: 0.85rem;
+.insight .label {
+    font-size: 0.76rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--color-muted);
+    letter-spacing: 0.08em;
+    color: var(--muted);
     margin-bottom: 8px;
 }
 
-.insight-value {
-    font-family: var(--font-display);
-    font-size: 1.8rem;
+.insight .value {
+    font-family: var(--display);
+    font-size: 1.5rem;
     font-weight: 700;
-    color: var(--color-primary);
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
-.insight-detail {
-    font-size: 0.85rem;
-    color: var(--color-muted);
-}
+.insight .detail { font-size: 0.85rem; color: var(--muted); }
 
-/* ==========================================================
-   Responsive
-   ========================================================== */
+/* ── Responsive ───────────────────────────────────────────── */
 
 @media (max-width: 640px) {
-    .nav-container {
-        flex-direction: column;
-        height: auto;
-        padding: 16px 20px;
-        gap: 12px;
-    }
-
-    .nav-links {
-        gap: 16px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .container {
-        padding: 24px 16px 60px;
-    }
-
-    .page-header h1 {
-        font-size: 1.6rem;
-    }
-
-    .student-table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    .detail-summary {
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    .form-card {
-        max-width: 100%;
-    }
+    .header-row { flex-direction: column; height: auto; padding: 14px 20px; gap: 10px; }
+    .site-nav a { margin: 0 12px; }
+    .page { padding: 24px 16px 60px; }
+    .page-head h1 { font-size: 1.5rem; }
+    .ledger { display: block; overflow-x: auto; white-space: nowrap; }
+    .card { max-width: 100%; }
+    .profile-summary { gap: 16px; }
 }

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Add Grade - Student Tracker{% endblock %}
+
+{% block content %}
+
+    <div class="row mb-4 align-items-center">
+        <div class="col">
+            <h2 class="mb-0">Add a Grade</h2>
+            <p class="text-muted">Assign a subject score to a student</p>
+        </div>
+    </div>
+
+    {% if students %}
+        <div class="card border-0 shadow-sm" style="max-width: 600px;">
+            <div class="card-body p-4">
+                <form method="POST">
+                    
+                    <div class="mb-3">
+                        <label for="roll_no" class="form-label fw-semibold">Student</label>
+                        <select id="roll_no" name="roll_no" class="form-select" required>
+                            <option value="" disabled selected>-- Choose a student --</option>
+                            {% for student in students %}
+                                <option value="{{ student.roll_no }}">
+                                    {{ student.roll_no }} - {{ student.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="subject" class="form-label fw-semibold">Subject</label>
+                        <input type="text" id="subject" name="subject" class="form-control" placeholder="e.g. Math, Science, English" required>
+                        <div class="form-text">Tip: Use consistent spelling and capitalization (e.g., always "Math").</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="value" class="form-label fw-semibold">Score (0-100)</label>
+                        <input type="number" id="value" name="value" class="form-control" placeholder="e.g. 85" min="0" max="100" required>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary px-4">Save Grade</button>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-light px-4">Cancel</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <div class="card border-0 shadow-sm text-center py-5 mt-4">
+            <div class="card-body">
+                <h4 class="text-muted mb-3">No students available.</h4>
+                <p class="text-secondary mb-4">You need to enroll at least one student before assigning grades.</p>
+                <a href="{{ url_for('new_student') }}" class="btn btn-primary px-4 py-2">+ Enroll Student</a>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

@@ -4,60 +4,66 @@
 
 {% block content %}
 
-    <div class="page-header">
-        <h1>Subject Insights</h1>
-        <p class="subtitle">Find the topper and class average for any subject</p>
+    <div class="row mb-4 align-items-center">
+        <div class="col">
+            <h2 class="mb-0">Subject Insights</h2>
+            <p class="text-muted">Find the topper and class average for any subject</p>
+        </div>
     </div>
 
     {% if subjects %}
-        <div class="form-card">
-            <form method="POST">
-                <div class="form-group">
-                    <label for="subject">Choose a Subject</label>
-                    <select id="subject" name="subject" required>
-                        <option value="" disabled {% if not selected_subject %}selected{% endif %}>
-                            -- Select a subject --
-                        </option>
-                        {% for subject in subjects %}
-                            <option value="{{ subject }}"
-                                {% if subject == selected_subject %}selected{% endif %}>
-                                {{ subject }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Show Insights</button>
-                </div>
-            </form>
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <form method="POST" class="row g-3 align-items-end">
+                    <div class="col-md-8">
+                        <label for="subject" class="form-label fw-semibold">Choose a Subject</label>
+                        <select id="subject" name="subject" class="form-select" required>
+                            <option value="" disabled {% if not selected %}selected{% endif %}>-- Select a subject --</option>
+                            {% for subject in subjects %}
+                                <option value="{{ subject }}" {% if subject == selected %}selected{% endif %}>
+                                    {{ subject }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary w-100">Show Insights</button>
+                    </div>
+                </form>
+            </div>
         </div>
 
         {% if result %}
-            <div class="insights-grid">
-                <div class="insight-card">
-                    <div class="insight-icon">🏆</div>
-                    <div class="insight-title">Subject Topper</div>
-                    <div class="insight-value">{{ result.topper_name }}</div>
-                    <div class="insight-detail">
-                        Roll No. {{ result.topper_roll }} &middot; Scored {{ result.topper_score }}/100
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm h-100 border-start border-warning border-4">
+                        <div class="card-body">
+                            <h6 class="text-muted text-uppercase mb-3">🏆 Subject Topper</h6>
+                            <h3 class="mb-1">{{ result.top_name }}</h3>
+                            <p class="text-secondary mb-0">Roll No: <strong>{{ result.top_roll_no }}</strong> &middot; Scored <strong>{{ result.top_score }}/100</strong></p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="insight-card">
-                    <div class="insight-icon">📈</div>
-                    <div class="insight-title">Class Average</div>
-                    <div class="insight-value">{{ result.class_average }}</div>
-                    <div class="insight-detail">
-                        Average score in {{ result.subject }} across all students
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm h-100 border-start border-info border-4">
+                        <div class="card-body">
+                            <h6 class="text-muted text-uppercase mb-3">📈 Class Average</h6>
+                            <h3 class="mb-1">{{ result.class_average }}%</h3>
+                            <p class="text-secondary mb-0">Average score in {{ result.subject }} across all students</p>
+                        </div>
                     </div>
                 </div>
             </div>
         {% endif %}
 
     {% else %}
-        <div class="empty-state">
-            <p>No grades have been added yet. Add some grades first to see insights.</p>
-            <a href="{{ url_for('add_grade') }}" class="btn btn-primary">+ Add Grade</a>
+        <div class="card border-0 shadow-sm text-center py-5 mt-4">
+            <div class="card-body">
+                <h4 class="text-muted mb-3">No grades recorded yet.</h4>
+                <p class="text-secondary mb-4">Add some grades first to unlock analytical insights.</p>
+                <a href="{{ url_for('new_score') }}" class="btn btn-primary px-4 py-2">+ Add Grade</a>
+            </div>
         </div>
     {% endif %}
 
